@@ -190,10 +190,10 @@ def switch_tab(at):
 
 
 import webbrowser as web
-web.open_new('http://127.0.0.1:8050/')
+#web.open_new('http://127.0.0.1:8050/')
 
-if __name__ == '__main__':
-    app.run_server(host='127.0.0.1',debug=False,dev_tools_hot_reload=False)    
+#if __name__ == '__main__':
+    #app.run_server(host='127.0.0.1',debug=False,dev_tools_hot_reload=False)    
 
 
 server = app.server
