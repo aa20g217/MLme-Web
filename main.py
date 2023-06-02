@@ -30,7 +30,8 @@ navigation_bar = dbc.Navbar(
             dbc.Col(width=9),
             html.A(dbc.Col(html.Img(src="https://www.unibe.ch/media/logo-unibern-footer@2x.png", height="80px"),align="right"),
                 href="https://www.unibe.ch/index_ger.html", target="_blank",
-                style={"textDecoration": "none"}),
+                style={"textDecoration": "none"})
+
         ],fluid=True,
     ),
    color="#444", 
@@ -116,6 +117,17 @@ tabs_main = dbc.Card(
 
 
 
+a=html.Div([
+    dcc.ConfirmDialog(
+        id='confirm-danger',
+        message="The AutoML functionality on this demonstration server is not available for use with external datasets due to limited computational resources. Please use the provided example input data (https://github.com/aa20g217/MLme-Web/blob/main/example-input-data/data-tab-sep.txt). To fully utilize the AutoML functionality, we recommend running MLme on your local machine or server. Thank you for your understanding.",
+    ),
+    html.Div(id='output-danger')
+])
+
+        
+
+
 app.layout = html.Div([navigation_bar,
     dcc.Store(id='scaling_tab_data',data={}),
     dcc.Store(id='overSamp_tab_para',data={}),
@@ -131,17 +143,15 @@ app.layout = html.Div([navigation_bar,
 
 #def getActiveAlgo(algoList):
 @app.callback(
-       Output("btn", "children"),
+     Output("btn", "children"),
     Input("MaxAbs Scaler-collapse-button", "n_clicks")
 )
 def toggle_collapse(n): 
-    # print(html.P("d"))
     return n
 
 @app.callback(Output("content", "children"), [Input("tabs", "active_tab")])
 def switch_tab(at):
-    #if at == "upload_data":
-        #return upload_data_content
+
     if at == "preprocessing":
         return preprocessing_content 
     elif at == "classAlgo":
@@ -150,7 +160,6 @@ def switch_tab(at):
         return modelEval_content
     elif at == "submit":
         return submit_con
-
     return html.P("This shouldn't ever be displayed...")
 
 @app.callback(Output("content_main", "children"), [Input("tabs_main", "active_tab")])
@@ -167,6 +176,17 @@ def switch_tab(at):
     elif at == "about":
         return about 
     return html.P("This shouldn't ever be displayed...")
+
+# show dialogue box
+# =============================================================================
+# @app.callback(Output('confirm-danger', 'displayed'), [Input("tabs_main", "active_tab")])
+# def switch_tab(at):
+#     if at == "autoML":
+#         return True 
+#     return False
+# =============================================================================
+
+
 
 
 import webbrowser as web
