@@ -375,6 +375,7 @@ def runSubscript(data,date,varTH_automl,percentile,indepTestSet):
                 print("\n\nPIPELINE:\n")
                 print(grid)
                 print("\n\n")
+            break
   
     
     
