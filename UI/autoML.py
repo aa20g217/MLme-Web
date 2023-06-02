@@ -59,7 +59,10 @@ upload_data_sidePanel=dbc.Card([dbc.CardBody([
             
                     ])],className="mt-3",color="dark", outline=True) 
 
+  
+
  
+
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 inputSidePanel=dbc.Card([dbc.CardBody([ 
@@ -263,9 +266,13 @@ resultPanel=dbc.Card([dbc.CardBody([
 # Combine
 # 
 # =============================================================================
-                        
+               
+
+
+
+  
 import dash_loading_spinners as dls
-autoML_content = dbc.Row(
+autoML_content_actual = dbc.Row(
     [   
         ####### side panel col
         dbc.Col([
@@ -283,15 +290,43 @@ autoML_content = dbc.Row(
 
         dbc.Col(dls.Hash(inputSidePanel,color="#FFFFFF"), width=10),
         #dbc.Col(inputSidePanel, width=10),
-
+                
         dbc.Row(html.Div(id="hidden_autoML",style={'display': 'none'})),
 
-    ]
+    ])
+
+### demo server notifcation
+text_temp=dbc.Card([dbc.CardBody([ 
+   
+    html.Div(["The AutoML functionality on this demonstration server is not available for use with external datasets due to limited computational resources. Please use the provided ",
+             html.A("example input data", href="https://github.com/aa20g217/MLme-Web/blob/main/example-input-data/data-tab-sep.txt", target="_blank"),
+             ".",
+             html.Br(),
+             html.Br(),
+             "To fully utilize the AutoML functionality, we recommend running MLme on your local machine or server. Thank you for your understanding."
+             ],style={"text-align": "justify"}),
+        
+    dbc.Button(html.I("      Continue", className="fa fa-solid fa-play-circle-o"),id="demoAgg",n_clicks=0,style={"margin-top": "15px"}),
+
+    ])],className="mt-3",color="dark", outline=True) 
+
+autoML_content=dbc.Col([
+                dbc.Row(dbc.Col(html.Div(text_temp,id="hidden_DemoWarn"))),
+                dbc.Row(dbc.Col(html.Div(id="hidden_Act_automl"),width=12)),
+    ],width=12)
+
+
+@app.callback(
+      Output(component_id='hidden_Act_automl', component_property='children'),
+      
+    Input("demoAgg","n_clicks")
 )
-
-
-
-
+def getFilename_autoML(n_clicks): 
+    if n_clicks!=0:
+        return autoML_content_actual
+    
+    
+    
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 # =============================================================================
 # Callbacks
@@ -346,8 +381,11 @@ def runAutoML(n_clicks,sep,varTH_automl,percentile,keepTest):
             #read file  
             global inputData,logFolder
             inputData=pd.read_csv(file,index_col=0,sep=sep)
+            
+            exampleData=pd.read_csv("./example-input-data/data-tab-sep.txt",index_col=0,sep="\t")
+            
             X= inputData.iloc[:,0:-1]
-            y = inputData.iloc[:,-1]
+            y = inputData.iloc[:,-1] 
             
             #del all folders from upload loc if there are too much
             filelist = [ f for f in os.listdir("./uploads/") if not f.startswith('.')]
@@ -358,6 +396,11 @@ def runAutoML(n_clicks,sep,varTH_automl,percentile,keepTest):
             #check for NAN values
             if inputData.isnull().values.any():
                 return "Given file contains NaN values. NaN values are not allowed.","",True
+            
+            #check if it is example input data
+            elif inputData.equals(exampleData)==False:
+                return "Uploaded dataset is not the example input data.","",True
+            
             else:
                 
                 #del all folders from autoML_output loc if there are too much
