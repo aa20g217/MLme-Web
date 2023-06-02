@@ -105,7 +105,7 @@ tabs_main = dbc.Card(
 
             ],
             id="tabs_main",
-            active_tab="upload_data",
+            active_tab="customML",
             card=True,
         )),
         dbc.CardBody(html.P(id="content_main", className="mt-3")),
