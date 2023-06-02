@@ -296,35 +296,50 @@ autoML_content_actual = dbc.Row(
     ])
 
 ### demo server notifcation
+# =============================================================================
+# text_temp=dbc.Card([dbc.CardBody([ 
+#    
+#     html.Div(["The AutoML functionality on this demonstration server is not available for use with external datasets due to limited computational resources. Please use the provided ",
+#              html.A("example input data", href="https://github.com/aa20g217/MLme-Web/blob/main/example-input-data/data-tab-sep.txt", target="_blank"),
+#              ".",
+#              html.Br(),
+#              html.Br(),
+#              "To fully utilize the AutoML functionality, we recommend running MLme on your local machine or server. Thank you for your understanding."
+#              ],style={"text-align": "justify"}),
+#         
+#     dbc.Button(html.I("      Continue", className="fa fa-solid fa-play-circle-o"),id="demoAgg",n_clicks=0,style={"margin-top": "15px"}),
+# 
+#     ])],className="mt-3",color="dark", outline=True) 
+# =============================================================================
+
 text_temp=dbc.Card([dbc.CardBody([ 
    
-    html.Div(["The AutoML functionality on this demonstration server is not available for use with external datasets due to limited computational resources. Please use the provided ",
-             html.A("example input data", href="https://github.com/aa20g217/MLme-Web/blob/main/example-input-data/data-tab-sep.txt", target="_blank"),
-             ".",
+    html.Div(["The AutoML functionality on this demonstration server is not available for due to limited computational resources.", 
              html.Br(),
              html.Br(),
              "To fully utilize the AutoML functionality, we recommend running MLme on your local machine or server. Thank you for your understanding."
              ],style={"text-align": "justify"}),
         
-    dbc.Button(html.I("      Continue", className="fa fa-solid fa-play-circle-o"),id="demoAgg",n_clicks=0,style={"margin-top": "15px"}),
 
     ])],className="mt-3",color="dark", outline=True) 
 
 autoML_content=dbc.Col([
                 dbc.Row(dbc.Col(html.Div(text_temp,id="hidden_DemoWarn"))),
-                dbc.Row(dbc.Col(html.Div(id="hidden_Act_automl"),width=12)),
+                #dbc.Row(dbc.Col(html.Div(id="hidden_Act_automl"),width=12)),
     ],width=12)
 
 
-@app.callback(
-      Output(component_id='hidden_Act_automl', component_property='children'),
-      
-    Input("demoAgg","n_clicks")
-)
-def getFilename_autoML(n_clicks): 
-    if n_clicks!=0:
-        return autoML_content_actual
-    
+# =============================================================================
+# @app.callback(
+#       Output(component_id='hidden_Act_automl', component_property='children'),
+#       
+#     Input("demoAgg","n_clicks")
+# )
+# def getFilename_autoML(n_clicks): 
+#     if n_clicks!=0:
+#         return autoML_content_actual
+#     
+# =============================================================================
     
     
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
@@ -693,5 +708,3 @@ genrateInfoCallback("autoML")
 genrateCollapseCallback("autoML")    
 
 
-
-    
